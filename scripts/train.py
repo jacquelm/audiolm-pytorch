@@ -1,7 +1,21 @@
+import os
+import sys
 import argparse
 import json
 import torch
-from src import SoundStream, SoundStreamTrainer, AttrDict
+from audiolm_pytorch import SoundStream, SoundStreamTrainer
+
+if os.path.exists(
+    "/home/maxime/Documents/Code/Neural_Network/Pytorch/audiolm-pytorch/src"
+):
+    sys.path.insert(
+        0, "/home/maxime/Documents/Code/Neural_Network/Pytorch/audiolm-pytorch/src"
+    )
+else:
+    sys.path.insert(
+        0, "/home/mjacquelin/Project/Neural_Network/Pytorch/audiolm-pytorch/src"
+    )
+from utils import AttrDict
 
 
 def get_parser():
@@ -13,18 +27,6 @@ def get_parser():
         type=str,
         required=True,
         help="The json file with parameters for training the model",
-    )
-    parser.add_argument(
-        "--data_path",
-        type=str,
-        default=None,
-        help="Features file path. You don't need to enter acoustic model details if you have dumped features",
-    )
-    parser.add_argument(
-        "--device",
-        default="cuda",
-        type=str,
-        help="The device to run the code on",
     )
     return parser
 
@@ -41,35 +43,35 @@ def main(args):
     if torch.cuda.is_available():
         torch.cuda.manual_seed(config.seed)
 
-    device = torch.device(args.device)
+    device = torch.device(config.device)
 
     soundstream = SoundStream(
-        codebook_size=config.codebook_size,
-        rq_num_quantizers=config.rq_num_quantizers,
-        # this paper proposes using multi-headed residual vector quantization - 
+        codebook_size=config.model["codebook_size"],
+        rq_num_quantizers=config.model["rq_num_quantizers"],
+        # this paper proposes using multi-headed residual vector quantization -
         # https://arxiv.org/abs/2305.02765
-        rq_groups=config.rq_groups,
-        # whether to use residual lookup free quantization - there are now reports of 
+        rq_groups=config.model["rq_groups"],
+        # whether to use residual lookup free quantization - there are now reports of
         # successful usage of this unpublished technique
-        use_lookup_free_quantizer=config.use_lookup_free_quantizer,  
+        use_lookup_free_quantizer=config.model["use_lookup_free_quantizer"],
         # whether to use residual finite scalar quantization
-        use_finite_scalar_quantizer=config.use_finite_scalar_quantizer,  
+        use_finite_scalar_quantizer=config.model["use_finite_scalar_quantizer"],
         # local attention receptive field at bottleneck
-        attn_window_size=config.attn_window_size,  
-        # 2 local attention transformer blocks - the soundstream folks were not experts 
-        # with attention, so i took the liberty to add some. encodec went with lstms, 
+        attn_window_size=config.model["attn_window_size"],
+        # 2 local attention transformer blocks - the soundstream folks were not experts
+        # with attention, so i took the liberty to add some. encodec went with lstms,
         # but attention should be better
-        attn_depth=config.attn_depth,  
+        attn_depth=config.model["attn_depth"],
     )
 
     trainer = SoundStreamTrainer(
         soundstream,
-        folder=config.data_path,
-        batch_size=config.batch_size,
-        grad_accum_every=8,  # effective batch size of 32
-        data_max_length_seconds=2,  # train on 2 second audio
-        num_train_steps=1_000_000,
-    ).cuda()
+        folder=config.trainer["folder"],
+        batch_size=config.trainer["batch_size"],
+        grad_accum_every=config.trainer["grad_accum_every"],
+        data_max_length_seconds=config.trainer["data_max_length_seconds"],
+        num_train_steps=config.trainer["num_train_steps"],
+    ).to(device)
 
     trainer.train()
 
