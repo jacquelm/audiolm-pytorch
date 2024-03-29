@@ -71,6 +71,8 @@ def main(args):
         grad_accum_every=config.trainer["grad_accum_every"],
         data_max_length_seconds=config.trainer["data_max_length_seconds"],
         num_train_steps=config.trainer["num_train_steps"],
+        save_model_every=config.trainer["save_model_every"],
+        save_results_every=config.trainer["save_results_every"],
     ).to(device)
 
     trainer.train()
