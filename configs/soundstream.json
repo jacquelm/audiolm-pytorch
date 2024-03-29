@@ -27,8 +27,8 @@
         "max_grad_norm": 0.5,
         "discr_max_grad_norm": null,
 
-        "save_results_every": 100,
-        "save_model_every": 1000,
+        "save_results_every": 1000,
+        "save_model_every": 10000,
         "log_losses_every": 1,
         "results_folder": "./results/soundstream",
         "valid_frac": 0.05,
