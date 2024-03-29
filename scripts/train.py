@@ -73,6 +73,7 @@ def main(args):
         num_train_steps=config.trainer["num_train_steps"],
         save_model_every=config.trainer["save_model_every"],
         save_results_every=config.trainer["save_results_every"],
+        results_folder=config.trainer["results_folder"],
     ).to(device)
 
     trainer.train()
