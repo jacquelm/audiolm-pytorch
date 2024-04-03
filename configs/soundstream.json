@@ -1,6 +1,8 @@
 {
     "seed": 1234,
     "device": "cuda",
+    "wandb_project": "soundstream",
+    "wandb_run": "v1",
 
     "trainer": {
         "num_train_steps": 1000000,
@@ -9,13 +11,13 @@
         "data_max_length": null,
         "data_max_length_seconds": 2,
 
-        "folder": "./data/dev-clean",
+        "folder": "/data/Audio_tmp/Raw/LibriSpeech/train-clean-360",
         "dataset": null,
         "val_dataset": null,
         "train_dataloader": null,
         "val_dataloader": null,
 
-        "lr": 2e-4,
+        "lr": 3e-4,
         "grad_accum_every": 8,
         "wd": 0.0,
         "warmup_steps": 1000,
@@ -30,7 +32,7 @@
         "save_results_every": 1000,
         "save_model_every": 10000,
         "log_losses_every": 1,
-        "results_folder": "./results/soundstream",
+        "results_folder": "./results/soundstream_v2",
         "valid_frac": 0.05,
         "random_split_seed": 42,
 
@@ -47,7 +49,7 @@
         "init_process_group_timeout_seconds": 1800,
         "dataloader_drop_last": true,
         "split_batches": false,
-        "use_wandb_tracking": false,
+        "use_wandb_tracking": true,
         "force_clear_prev_results": null
     },
     
@@ -57,7 +59,7 @@
         "strides": [2,4,5,8],
         "channel_mults": [2, 4, 8, 16],
         "codebook_dim": 512,
-        "codebook_size": 4096,
+        "codebook_size": 1024,
 
         "finite_scalar_quantizer_levels": null,
 

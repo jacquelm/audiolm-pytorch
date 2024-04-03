@@ -74,16 +74,11 @@ def main(args):
         save_model_every=config.trainer["save_model_every"],
         save_results_every=config.trainer["save_results_every"],
         results_folder=config.trainer["results_folder"],
+        use_wandb_tracking = config.trainer["use_wandb_tracking"],
     ).to(device)
 
-    trainer.train()
-
-    # after a lot of training, you can test the autoencoding as so
-
-    soundstream.eval()  # your soundstream must be in eval mode, to avoid having the residual dropout of the residual VQ necessary for training
-
-    audio = torch.randn(10080).cuda()
-    recons = soundstream(audio, return_recons_only=True)  # (1, 10080) - 1 channel
+    with trainer.wandb_tracker(project = config.wandb_project, run = config.wandb_run):
+        trainer.train()
 
 
 if __name__ == "__main__":
