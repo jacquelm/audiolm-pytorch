@@ -15,7 +15,7 @@ else:
     sys.path.insert(
         0, "/home/mjacquelin/Project/Neural_Network/Pytorch/audiolm-pytorch/src"
     )
-from utils import AttrDict
+from utils import AttrDict, build_env
 
 
 def get_parser():
@@ -38,6 +38,7 @@ def main(args):
 
     json_config = json.loads(data)
     config = AttrDict(json_config)
+    build_env(args.config, "config.json", config.trainer["results_folder"])
 
     torch.manual_seed(config.seed)
     if torch.cuda.is_available():
