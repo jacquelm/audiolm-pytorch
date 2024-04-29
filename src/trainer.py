@@ -20,7 +20,7 @@ import torch
 import torchaudio
 from torch import nn
 from torch.optim import Optimizer
-from torch.optim.lr_scheduler import LambdaLR, _LRScheduler
+from torch.optim.lr_scheduler import LambdaLR, ConstantLR, LRScheduler, _LRScheduler
 from torch.utils.data import Dataset, DataLoader, random_split
 
 import pytorch_warmup as warmup
@@ -89,7 +89,7 @@ DATASET_FIELD_TYPE_CONFIG = dict(
 # helpers
 
 def exists(val):
-    return val is not None
+    return val is not None and type(val) != str
 
 def default(val, d):
     return val if exists(val) else d
@@ -166,7 +166,7 @@ class OptimizerWithWarmupSchedule(nn.Module):
         self,
         accelerator: Accelerator,
         optimizer: Optimizer,
-        scheduler: Optional[Type[_LRScheduler]] = None,
+        scheduler: Optional[Type[LRScheduler]] = None,
         scheduler_kwargs: dict = dict(),
         warmup_steps: int = 0
     ):
@@ -226,10 +226,10 @@ class SoundStreamTrainer(nn.Module):
         grad_accum_every: int = 4,
         wd: float = 0.,
         warmup_steps: int = 1000,
-        scheduler: Optional[Type[_LRScheduler]] = None,
+        scheduler: Optional[Type[LRScheduler]] = None,
         scheduler_kwargs: dict = dict(),
         discr_warmup_steps: Optional[int] = None,
-        discr_scheduler: Optional[Type[_LRScheduler]] = None,
+        discr_scheduler: Optional[Type[LRScheduler]] = None,
         discr_scheduler_kwargs: dict = dict(),
         max_grad_norm: float = 0.5,
         discr_max_grad_norm: float = None,

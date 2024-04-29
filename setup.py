@@ -10,7 +10,7 @@ setup(
   author = 'Phil Wang',
   author_email = 'lucidrains@gmail.com',
   long_description_content_type = 'text/markdown',
-  url = 'https://github.com/lucidrains/audiolm-pytorch',
+  url = 'https://github.com/jacquelm/audiolm-pytorch/tree/training',
   keywords = [
     'artificial intelligence',
     'deep learning',

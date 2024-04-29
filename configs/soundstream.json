@@ -5,19 +5,19 @@
     "wandb_run": "v1",
 
     "trainer": {
-        "num_train_steps": 1000000,
+        "num_train_steps": 100000,
         "batch_size": 4,
 
         "data_max_length": null,
-        "data_max_length_seconds": 2,
+        "data_max_length_seconds": 1,
 
-        "folder": "/data/Audio_tmp/Raw/LibriSpeech/train-clean-360",
+        "folder": "/data/Audio_tmp/Raw/LibriSpeech/dev-clean",
         "dataset": null,
         "val_dataset": null,
         "train_dataloader": null,
         "val_dataloader": null,
 
-        "lr": 3e-4,
+        "lr": 2e-4,
         "grad_accum_every": 8,
         "wd": 0.0,
         "warmup_steps": 1000,
@@ -30,10 +30,10 @@
         "discr_max_grad_norm": null,
 
         "save_results_every": 1000,
-        "save_model_every": 10000,
+        "save_model_every": 5000,
         "log_losses_every": 1,
-        "results_folder": "./results/soundstream_v2",
-        "valid_frac": 0.05,
+        "results_folder": "./checkpoints/soundstream_v1",
+        "valid_frac": 0.10,
         "random_split_seed": 42,
 
         "use_ema": true,
@@ -84,7 +84,7 @@
         "multi_spectral_n_mels": 64,
 
         "recon_loss_weight": 1.0,
-        "multi_spectral_recon_loss_weight": 1e-5,
+        "multi_spectral_recon_loss_weight": 1e-2,
         "adversarial_loss_weight": 1.0,
         "feature_loss_weight": 100,
         "quantize_dropout_cutoff_index": 1,
